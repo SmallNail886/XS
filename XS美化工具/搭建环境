@@ -1,0 +1,10 @@
+termux-setup-storage
+pkg install python
+pkg install git wget curl vim
+pkg update && pkg upgrade -y
+pkg install -y git wget curl vim mplayer
+pkg install -y toilet figlet pv
+pkg install -y x11-repo qemu-utils qemu-system-x86_64 qemu-system-i386 qemu-user-i386
+pkg install -y python python-pip
+pip install --upgrade pip
+pip install colorama pyfiglet
