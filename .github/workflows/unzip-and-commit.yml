@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'XS美化工具.zip'
+      - 'xxxxxx.zip'
 
 jobs:
   unzip-and-commit:
@@ -16,9 +16,9 @@ jobs:
       - name: 安装unzip工具
         run: sudo apt-get install -y unzip
 
-      - name: 解压 XS美化工具.zip
+      - name: 解压 xxxxxx.zip
         run: |
-          unzip -o "XS美化工具.zip" -d ./
+          unzip -o "xxxxxx.zip" -d ./
 
       - name: 提交解压后的文件
         run: |
