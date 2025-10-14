@@ -1,4 +1,4 @@
-name: 自动解压并提交XS美化工具
+name: 自动解压并提交
 
 on:
   workflow_dispatch:
@@ -10,20 +10,41 @@ jobs:
   unzip-and-commit:
     runs-on: ubuntu-latest
     steps:
-      - name: 检出仓库代码
+      - name: 检出仓库代码（包括新推送的文件）
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # 获取完整历史记录，确保能访问所有文件
+          fetch-depth: 0
 
       - name: 安装unzip工具
         run: sudo apt-get install -y unzip
 
-      - name: 解压 xxxxxx.zip
+      - name: 检查zip文件是否存在
+        run: |
+          ls -la
+          if [ ! -f "xxxxxx.zip" ]; then
+            echo "错误：xxxxxx.zip 文件不存在"
+            exit 1
+          fi
+
+      - name: 解压 XS美化工具.zip
         run: |
           unzip -o "xxxxxx.zip" -d ./
+
+      - name: 删除原始zip文件（可选）
+        run: |
+          rm -f "xxxxxx.zip"
 
       - name: 提交解压后的文件
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add .
-          git commit -m "自动解压XS美化工具.zip并提交" || echo "无需提交"
-          git push
+          # 检查是否有变更需要提交
+          if git diff-index --quiet HEAD --; then
+            echo "没有变更需要提交"
+          else
+            git commit -m "自动解压 xxxxxx.zip 并提交解压后的文件"
+            git push
+          fi
